@@ -1,0 +1,12 @@
+import java.util.Random;
+Random r1 = new Random(42);
+Random r2 = new Random(42);
+int x, y;
+for(int i=0; i<10; i++) { x = r1.nextInt(); y = r2.nextInt(); if(x == y){ System.out.println("They match! " + x);}}
+
+import java.security.SecureRandom;
+byte[] s = new byte[] { (byte) 0x2a };
+SecureRandom sr1 = new SecureRandom(s);
+SecureRandom sr2 = new SecureRandom(s);
+if(sr1.nextInt() == sr2.nextInt()) { System.out.println("They match!"); } else { System.out.println("No match."); }
+for(int i=0; i<10; i++) { x = sr1.nextInt(); y = sr2.nextInt(); if(x == y){ System.out.println("They match! " + x);} else { System.out.println("No match"); }}
