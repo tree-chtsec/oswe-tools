@@ -5,4 +5,5 @@
 * JDB
 * PDB
 * dnspy
-* VSCode
+* VSCode + Python
+* VSCode + NodeJS
