@@ -8,6 +8,14 @@
 
 一句話反連指令, 有多種語言
 
+## sqli
+
+自己刻的BST Boolean-based SQLi
+
+## ssti
+
+練習時有遇到的 SSTI, 記錄簡單復現方式
+
 ## jars
 
 好用的 Java 工具
