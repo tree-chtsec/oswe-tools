@@ -60,7 +60,7 @@ settings 猜測是 django 的 settings.py, 因此有機會拿到 settings.SECRET
 ## Vulnerable Code II
 
 run.py
-```
+```python
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
@@ -75,7 +75,7 @@ TEMPLATES = [
 ```
 
 vuln\_code.py
-```
+```python
 import subprocess
 from django import template
 
@@ -92,7 +92,13 @@ def dexec(string):
 平常應該遇不到這種配置, 自定義的 filter 存在執行 command 的能力.
 不過也不是沒有可能, 也許會有人自定義 filter 執行查詢功能, 不小心開啟了 Command Injection 之類
 
-```
+```python
 {{ "ls -la"|dexec }}
+total 24
+drwxr-xr-x  2 kali kali 4096 Nov  2 12:18 .
+drwxr-xr-x 25 kali kali 4096 Nov  2 12:18 ..
+-rw-r--r--  1 kali kali 1181 Nov  2 12:18 run.py
+-rw-r--r--  1 kali kali  200 Nov  2 12:16 vuln_code.py
+-rw-r--r--  1 kali kali  523 Nov  2 12:18 vuln_code.pyc
 ```
 
