@@ -40,7 +40,7 @@ def run(task, values, thread_num=8, verb=False, max_retries=5):
         t.start()
         threads.append(t)
     
-    while not valueQueue.empty():
+    while not valueQueue.empty() and not stopSign:
         try:
             time.sleep(0.6)
         except KeyboardInterrupt:
