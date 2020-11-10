@@ -32,3 +32,6 @@
 
 小工具, 不知道怎麼分類就放這
 
+## XSS.md
+
+編寫 XSS 攻擊時的大抄, 包含 js-api, fetch Auth pages, keylogger ...
