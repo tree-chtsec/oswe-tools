@@ -1,7 +1,10 @@
 from __future__ import print_function
 
 import time
-import queue
+try:
+    import queue
+except ImportError:
+    import Queue as queue
 import threading
 from multiprocessing.pool import ThreadPool
 
