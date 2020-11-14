@@ -16,16 +16,13 @@ ptvsd.wait_for_attach()
 4. 把整個資料夾拖進 VSCode, 選定 Main function 後 ( 如 app.py ), ctrl+shift+D > 新增 launch.json
 ```json
 {
-    // Use IntelliSense to learn about possible attributes.
-    // Hover to view descriptions of existing attributes.
-    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
     "version": "0.2.0",
     "configurations": [
         {
             "name": "Python: Remote Attach",
             "type": "python",
             "request": "attach",
-            "port": <remote-port>,
+            "port": 5678,
             "host": "<remote-host>",
             "pathMappings": [{
                 "localRoot": "${workspaceFolder}",
