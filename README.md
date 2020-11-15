@@ -8,6 +8,9 @@
 
 一句話反連指令, 有多種語言
 
+`pty_shell_handler.py` 是從 [這裡](https://github.com/infodox/python-pty-shells/blob/master/tcp_pty_shell_handler.py) 取得的, 把 pty shell 升級成可以 `ctrl^c` 的完整shell
+
+
 ## sqli
 
 自己刻的BST Boolean-based SQLi
