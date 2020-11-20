@@ -4,7 +4,7 @@ import re, os, sys
 
 
 def get_cols(table, template, fn, get_str):
-    query = "(select COUNT(column_name) from information_schema.columns where table_name='%s')" % (table)
+    query = "(select COUNT(column_name)::text from information_schema.columns where table_name='%s')" % (table)
     v = get_str(template, query, fn)
     columns = []
     for i in range(int(v)):
@@ -16,7 +16,7 @@ def get_cols(table, template, fn, get_str):
 def dump_table(table, template, fn, get_str):
     columns = get_cols(table, template, fn, get_str)
     print(columns)
-    query = "(select COUNT(*) from %s)" % table
+    query = "(select COUNT(*)::text from %s)" % table
     n = get_str(template, query, fn)
     records = []
     for i in range(int(n)):
